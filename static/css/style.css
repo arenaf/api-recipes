@@ -1,0 +1,154 @@
+
+
+.bg-my-navbar{
+    background-color: #fffcf2;
+    color: #80BCBD;
+}
+
+.bg-my-navbar:hover{
+    background-color: #fffcf2;
+    color: #343a40;
+}
+
+.text-title{
+    color:#AAD9BB;
+    font-size:6em;
+    text-transform: uppercase;
+}
+
+.img-cabecera{
+    background-image: url("../assets/img/cabecera.png");
+    background-size:cover;
+}
+
+.card{
+    background-color: #fffbf8;
+}
+
+pre{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    width: 50em;
+    white-space: pre-wrap;
+
+}
+
+h1{
+    width: 15em;
+}
+
+.jumbotron {
+    background-color: #80BCBD;
+    margin-bottom: 0;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-image: url("../assets/img/fondo1.png");
+    background-size:contain;
+}
+
+
+footer {
+  background-color: #343a40;
+  padding: 25px;
+  margin-top: auto;
+  color: #CA8787;
+}
+
+.img-highlight {
+    overflow: hidden;
+}
+
+.img-highlight img {
+    transition: all 0.5s ease;
+}
+
+.img-highlight:hover img {
+    transform: scale(1.05);
+}
+
+
+
+
+#mainNav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030;
+  border-bottom: 1px solid #dee2e6;
+  background-color: #fffcf2;
+
+}
+#mainNav .navbar-brand {
+  font-weight: 800;
+}
+#mainNav .navbar-toggler {
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.75rem;
+  text-transform: uppercase;
+}
+#mainNav .navbar-nav > li.nav-item > a.nav-link {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.0625em;
+  text-transform: uppercase;
+}
+@media (min-width: 992px) {
+  #mainNav {
+    border-bottom: 1px solid transparent;
+    background: transparent;
+  }
+  #mainNav .navbar-brand {
+    color: #fffcf2;
+  }
+  #mainNav .navbar-brand:focus, #mainNav .navbar-brand:hover {
+    color: #AAD9BB;
+  }
+  #mainNav .navbar-nav > li.nav-item > a.nav-link {
+    color: #fffcf2;
+  }
+  #mainNav .navbar-nav > li.nav-item > a.nav-link:focus, #mainNav .navbar-nav > li.nav-item > a.nav-link:hover {
+    color: #AAD9BB;
+  }
+}
+@media (min-width: 992px) {
+  #mainNav {
+    transition: background-color 0.2s;
+    /* Force Hardware Acceleration in WebKit */
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  #mainNav.is-fixed {
+    /* when the user scrolls down, we hide the header right above the viewport */
+    position: fixed;
+    top: -83px;
+    transition: transform 0.2s;
+    border-bottom: 1px solid white;
+    background-color: #fffcf2;
+  }
+  #mainNav.is-fixed .navbar-brand {
+    color: #fffcf2;
+  }
+  #mainNav.is-fixed .navbar-brand:focus, #mainNav.is-fixed .navbar-brand:hover {
+    color: #AAD9BB;
+  }
+  #mainNav.is-fixed .navbar-nav > li.nav-item > a {
+    color: #fffcf2;
+  }
+  #mainNav.is-fixed .navbar-nav > li.nav-item > a:focus, #mainNav.is-fixed .navbar-nav > li.nav-item > a:hover {
+    color: #AAD9BB;
+  }
+  #mainNav.is-visible {
+    /* if the user changes the scrolling direction, we show the header */
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+
+
+

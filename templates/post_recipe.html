@@ -1,0 +1,52 @@
+
+<!--
+<header class="masthead" style="background-color: #B4B4B8">
+  <div class="container position-relative px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <div class="post-heading">
+          <h1>Nueva Receta</h1>
+          <h2 class="subheading">Nueva receta</h2>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+-->
+
+<header
+  class="masthead"
+  style="background-color: #80BCBD"
+>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="../static/css/style.css">
+
+
+  <div class="p-3 text-center jumbotron img-cabecera">
+
+    <div class="container py-5">
+      <p class="text-title">NEW RECIPE</p>
+    </div>
+  </div>
+</header>
+
+{% from "bootstrap5/form.html" import render_form %}
+{% include "header.html" %}
+
+<main class="pb-4 pt-4 " >
+
+  <div class="container ">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+          {{ render_form(form, novalidate=True, button_map={"submit": "secondary"}) }}
+        </div>
+    </div>
+  </div>
+</main>
+
+
+
+{% include "footer.html" %}

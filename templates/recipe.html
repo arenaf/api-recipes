@@ -1,0 +1,49 @@
+<header
+  class="masthead"
+  style="background-color: #80BCBD"
+>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="../static/css/style.css">
+
+
+  <div class="p-3 text-center jumbotron img-cabecera" >
+
+    <div class="container py-5">
+      <p class="text-title">RECIPE</p>
+    </div>
+  </div>
+</header>
+
+
+{% include "header.html" %}
+
+<main class="pb-4 pt-4" >
+  <div class="container col-xxl-8 pt-5 pb-0" >
+        <div class="row flex-lg-row g-5 pt-5 py-5 " >
+
+          <div class="col-10 col-sm-8 col-lg-6">
+            <img src="{{ recipe.img_url }}" alt="img-recipe" border="0" class="d-block mx-lg-auto img-fluid" width="600em" loading="lazy"/>
+          </div>
+          <div class="col-lg-6">
+            <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">
+              {{ recipe.title }}
+            </h1>
+              <h6 class="card-subtitle mb-2 text-body-secondary">{{ recipe.category }}</h6>
+            <div>
+              <p class="lead mb-4">
+              <h3 class="fw-semibold text-body-emphasis lh-1 mb-3">Ingredientes </h3>
+                <pre class="fs-6">{{ recipe.ingredients }}</pre>
+              <h3 class="fw-semibold text-body-emphasis lh-1 mb-3">Instrucciones </h3>
+                <pre class="fs-6 ">{{ recipe.instructions }}</pre>
+              </p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+</main>
+
+
+{% include "footer.html" %}
