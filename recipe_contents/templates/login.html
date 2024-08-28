@@ -1,0 +1,47 @@
+{% from "bootstrap5/form.html" import render_form %}
+
+
+<header
+  class="masthead"
+  style="background-color: #E6A4B4"
+>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="../static/css/style.css">
+
+
+  <div class="p-3 text-center jumbotron img-cabecera">
+
+    <div class="container py-5">
+      <p class="text-title">LOGIN</p>
+    </div>
+  </div>
+</header>
+
+{% include "header.html" %}
+
+
+<main class="mb-4">
+  <div class="container g-4 py-5">
+    <h2 class="pb-2 border-bottom">Login</h2>
+    <div class="row">
+      <!-- mensaje flash-->
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      {% for message in messages %}
+      <p class="flash">{{ message }}</p>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+      <div class="col-lg-8 col-md-10 mx-auto g-2 py-2">
+
+        <!--formulario login-->
+        {{ render_form(form, novalidate=true, button_map={"submit": "secondary"}) }}
+
+      </div>
+    </div>
+  </div>
+</main>
+
+{% include "footer.html" %}
