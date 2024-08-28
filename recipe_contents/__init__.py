@@ -4,6 +4,7 @@ from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "ui8402Lou802lkKowkS_y720floR97"
 Bootstrap5(app)
@@ -19,6 +20,11 @@ class Base(DeclarativeBase):
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///recipes.db'
 db = SQLAlchemy(model_class=Base)
 
+# Connect to Database
+db.init_app(app)
 
 
-from recipe_contents import main
+with app.app_context():
+    db.create_all()
+
+from recipe_contents import blueprint_routes
