@@ -21,6 +21,13 @@ def show_recipe(recipe_id):
     requested_post = db.session.execute(db.select(Recipe).where(Recipe.id == recipe_id)).scalar()
     return render_template("recipe.html", show_recipe=requested_post)
 
+
+# Mostrar mis recetas
+@recipes_blueprint.route("/my-recipes")
+def my_recipes():
+    user_recipes_only = db.session.execute(db.select(Recipe).where(Recipe.user_id == current_user.id)).scalars().all()
+    return render_template("index.html", all_recipes=user_recipes_only, current_user=current_user)
+
 # Mostrar recetas de una categoría
 @recipes_blueprint.route("/show-category/<category_name>")
 def show_category(category_name):

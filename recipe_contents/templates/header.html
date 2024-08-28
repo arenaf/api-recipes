@@ -46,7 +46,9 @@
                 <li><a class="dropdown-item bg-my-navbar" href="{{ url_for('recipes.show_category', category_name='Merienda') }}">Merienda</a></li>
                 <li><a class="dropdown-item bg-my-navbar" href="{{ url_for('recipes.show_category', category_name='Cena') }}">Cena</a></li>
                 <li><a class="dropdown-item bg-my-navbar" href="{{ url_for('recipes.home') }}">Todas las Recetas</a></li>
-                <li><a class="dropdown-item bg-my-navbar" href="{{ url_for('recipes.home') }}">Mis Recetas</a></li>
+              {% if current_user.is_authenticated %}
+                <li><a class="dropdown-item bg-my-navbar" href="{{ url_for('recipes.my_recipes') }}">Mis Recetas</a></li>
+              {% endif %}
               </ul>
 
             </li>

@@ -1,0 +1,9 @@
+from recipe_contents import app
+from recipe_contents.recipes_view.recipes_routes import recipes_blueprint
+from recipe_contents.user_routes.user_routes import user_blueprint
+from recipe_contents.recipes_api.api_routes import api_blueprint
+
+
+app.register_blueprint(recipes_blueprint)
+app.register_blueprint(user_blueprint)
+app.register_blueprint(api_blueprint)
