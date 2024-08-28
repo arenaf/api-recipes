@@ -24,24 +24,21 @@
 <div class="container">
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 py-5">
-          {% for recipe in recipes %}
+          {% for show_recipe in all_recipes %}
 
         <div class="col">
           <div class="card shadow-sm">
             <div class="img-highlight">
-              <a href="{{ url_for('show_recipe', recipe_id=recipe.id) }}" >
-                <img src= "{{ recipe.img_url }}" alt="img-recipe" border="0" class="d-block mx-lg-auto img-fluid" width="600em" loading="lazy"/>
+              <a href="{{ url_for('recipes.show_recipe', recipe_id=show_recipe.id) }}" >
+                <img src= "{{ show_recipe.img_url }}" alt="img-recipe" border="0" class="d-block mx-lg-auto img-fluid" width="600em" loading="lazy"/>
               </a>
             </div>
             <div class="card-body">
-              <h5 class="card-text">{{ recipe.title }}</h5>
-                <h6 class="card-subtitle mb-2 text-body-secondary">{{ recipe.category }}</h6>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
+              <h5 class="card-text">{{ show_recipe.title }}</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary">{{ show_recipe.category }}</h6>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
 
-
-                </div>
-                <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('show_recipe', recipe_id=recipe.id) }}" role="button"> Ver receta</a>
+                <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('recipes.show_recipe', recipe_id=show_recipe.id) }}" role="button"> Ver receta</a>
 
 
               </div>

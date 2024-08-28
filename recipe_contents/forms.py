@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, SubmitField, TextAreaField, EmailField, PasswordField
 from wtforms.validators import DataRequired, URL, InputRequired, Email
-
+import email_validator
 
 class RecipeForm(FlaskForm):
     title = StringField("Nombre de la receta ", validators=[DataRequired()])
@@ -17,9 +17,10 @@ class RecipeForm(FlaskForm):
 
 # Creación de nuevos usuarios
 class RegisterUserForm(FlaskForm):
+    name = StringField("Nombre", validators=[DataRequired()])
     email = EmailField("Email", validators=[DataRequired(), Email("Introduce un email válido.")])
     password = PasswordField("Contraseña", validators=[DataRequired()])
-    name = StringField("Nombre", validators=[DataRequired()])
+    check_password = PasswordField("Repite la contraseña", validators=[DataRequired()])
     submit = SubmitField("Registrar")
 
 # Formulario login para usuarios que ya existen

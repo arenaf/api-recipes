@@ -1,5 +1,4 @@
 from functools import wraps
-
 from flask import render_template, request, redirect, url_for, Blueprint, flash
 from flask_login import login_user, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -11,6 +10,7 @@ from recipe_contents.models import User
 user_blueprint = Blueprint("user", __name__, template_folder="../templates")
 
 
+
 # --------- Registro de nuevo usuario --------
 @user_blueprint.route('/new-user', methods=["GET", "POST"])
 def register_new_user():
@@ -19,20 +19,24 @@ def register_new_user():
         user = User.query.filter_by(email=request.form["email"]).first()
         if not form.validate():
             flash("Email no válido.")
-            return redirect(url_for("new_user_register"))
+            return redirect(url_for("user.register_new_user"))
         if user != None:
             flash("¡Este email ya existe! Loguéate para acceder a tus tareas.")
-            return redirect(url_for("login"))
-        final_pass = generate_password_hash(password=request.form["password"], method="pbkdf2:sha256", salt_length=8)
-        new_user = User(
-            name=request.form["name"],
-            password=final_pass,
-            email=request.form["email"]
-        )
-        db.session.add(new_user)
-        db.session.commit()
-        login_user(new_user)
-        return redirect(url_for("home"))
+            return redirect(url_for("user.login"))
+        if request.form["password"] == request.form["check_password"]:
+            final_pass = generate_password_hash(password=request.form["password"], method="pbkdf2:sha256",
+                                                salt_length=8)
+            new_user = User(
+                name=request.form["name"],
+                password=final_pass,
+                email=request.form["email"]
+            )
+            db.session.add(new_user)
+            db.session.commit()
+            login_user(new_user)
+            return redirect(url_for("recipes.home"))
+        else:
+            flash("Las contraseñas no coinciden")
     return render_template("register_user.html", form=form, current_user=current_user)
 
 
@@ -48,16 +52,18 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=request.form["email"]).first()
+        print(user)
         if user == None:
             flash("¡No hay ningún usuario registrado con ese email!")
-            return redirect(url_for("login"))
+            return redirect(url_for("user.login"))
         if check_password_hash(user.password, request.form["password"]):
             login_user(user)
             return redirect(url_for("recipes.home"))
         else:
             flash("Password incorrecta. Inténtalo de nuevo")
-            return redirect(url_for("login"))
+            return redirect(url_for("user.login"))
     return render_template("login.html", form=form, current_user=current_user)
+
 
 # -------- Función decorador --------
 # Solo los usuarios logueados pueden ver sus tareas

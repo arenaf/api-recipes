@@ -24,22 +24,23 @@
         <div class="row flex-lg-row g-5 pt-5 py-5 " >
 
           <div class="col-10 col-sm-8 col-lg-6">
-            <img src="{{ recipe.img_url }}" alt="img-recipe" border="0" class="d-block mx-lg-auto img-fluid" width="600em" loading="lazy"/>
+            <img src="{{ show_recipe.img_url }}" alt="img-recipe" border="0" class="d-block mx-lg-auto img-fluid" width="600em" loading="lazy"/>
           </div>
           <div class="col-lg-6">
             <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">
-              {{ recipe.title }}
+              {{ show_recipe.title }}
             </h1>
-              <h6 class="card-subtitle mb-2 text-body-secondary">{{ recipe.category }}</h6>
+              <h6 class="card-subtitle mb-2 text-body-secondary">{{ show_recipe.category }}</h6>
             <div>
               <p class="lead mb-4">
               <h3 class="fw-semibold text-body-emphasis lh-1 mb-3">Ingredientes </h3>
-                <pre class="fs-6">{{ recipe.ingredients }}</pre>
+                <pre class="fs-6">{{ show_recipe.ingredients }}</pre>
               <h3 class="fw-semibold text-body-emphasis lh-1 mb-3">Instrucciones </h3>
-                <pre class="fs-6 ">{{ recipe.instructions }}</pre>
+                <pre class="fs-6 ">{{ show_recipe.instructions }}</pre>
               </p>
 
             </div>
+            <p class="text-end text-body-secondary text-posted">Creado por {{ show_recipe.user.name }}</p>
           </div>
         </div>
       </div>

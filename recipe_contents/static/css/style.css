@@ -16,6 +16,27 @@
     text-transform: uppercase;
 }
 
+pre{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    width: 50em;
+    white-space: pre-wrap;
+}
+
+.text-logged-in{
+    color: #fffcf2;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.0625em;
+    padding: 0.4rem;
+
+}
+
+.text-posted{
+    font-size:1em;
+    letter-spacing: 0.0625em;
+
+}
+
 .img-cabecera{
     background-image: url("../assets/img/cabecera.png");
     background-size:cover;
@@ -29,7 +50,6 @@ pre{
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     width: 50em;
     white-space: pre-wrap;
-
 }
 
 h1{
@@ -49,14 +69,6 @@ body{
     background-size:contain;
 }
 
-
-footer {
-  background-color: #343a40;
-  padding: 25px;
-  margin-top: auto;
-  color: #AAD9BB;
-}
-
 .img-highlight {
     overflow: hidden;
 }
@@ -68,6 +80,14 @@ footer {
 .img-highlight:hover img {
     transform: scale(1.05);
 }
+
+footer {
+  background-color: #343a40;
+  padding: 25px;
+  margin-top: auto;
+  color: #AAD9BB;
+}
+
 
 
 

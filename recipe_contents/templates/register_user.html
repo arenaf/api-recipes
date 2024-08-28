@@ -31,13 +31,13 @@
       {% with messages = get_flashed_messages() %}
       {% if messages %}
       {% for message in messages %}
-      <p class="flash">{{ message }}</p>
+      <p class="flash error">{{ message }}</p>
       {% endfor %}
       {% endif %}
       {% endwith %}
       <div class="col-lg-8 col-md-10 mx-auto g-2 py-2">
         <!-- formulario de registro -->
-        {{ render_form(form, novalidate=true, button_map={"submit": "secondary"}) }}
+        {{ render_form(form, button_map={"submit": "secondary"}) }}
       </div>
     </div>
   </div>
