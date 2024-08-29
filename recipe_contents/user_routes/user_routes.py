@@ -4,7 +4,7 @@ from flask_login import login_user, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from recipe_contents import db
-from recipe_contents.forms import RegisterUserForm, LoginForm
+from recipe_contents.forms import RegisterUserForm, LoginForm, ChangePasswordForm
 from recipe_contents.models import User
 
 user_blueprint = Blueprint("user", __name__, template_folder="../templates")
@@ -21,7 +21,7 @@ def register_new_user():
             flash("Email no válido.")
             return redirect(url_for("user.register_new_user"))
         if user != None:
-            flash("¡Este email ya existe! Loguéate para acceder a tus tareas.")
+            flash("¡Este email ya existe! !Loguéate¡")
             return redirect(url_for("user.login"))
         if request.form["password"] == request.form["check_password"]:
             final_pass = generate_password_hash(password=request.form["password"], method="pbkdf2:sha256",
@@ -52,7 +52,6 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=request.form["email"]).first()
-        print(user)
         if user == None:
             flash("¡No hay ningún usuario registrado con ese email!")
             return redirect(url_for("user.login"))
@@ -63,6 +62,31 @@ def login():
             flash("Password incorrecta. Inténtalo de nuevo")
             return redirect(url_for("user.login"))
     return render_template("login.html", form=form, current_user=current_user)
+
+
+# --------- Change Password --------
+@user_blueprint.route('/change-password', methods=["GET", "POST"])
+def change_password():
+    form = ChangePasswordForm()
+    if request.method == "POST":
+        user = User.query.filter_by(email=request.form["email"]).first()
+        if not form.validate():
+            flash("Email no válido.")
+            return redirect(url_for("user.change_password"))
+        if user != None:
+            if request.form["password"] == request.form["check_password"]:
+                final_pass = generate_password_hash(password=request.form["password"], method="pbkdf2:sha256",
+                                                    salt_length=8)
+                user.password=final_pass
+                db.session.add(user)
+                db.session.commit()
+                login_user(user)
+                return redirect(url_for("recipes.home"))
+            else:
+                flash("Las contraseñas no coinciden")
+    return render_template("change_password.html", form=form, current_user=current_user)
+
+
 
 
 # -------- Función decorador --------

@@ -23,8 +23,17 @@ class RegisterUserForm(FlaskForm):
     check_password = PasswordField("Repite la contraseña", validators=[DataRequired()])
     submit = SubmitField("Registrar")
 
+
 # Formulario login para usuarios que ya existen
 class LoginForm(FlaskForm):
     email = EmailField("Email", validators=[DataRequired(), Email("Introduce un email válido.")])
     password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Login")
+
+
+# Foget password
+class ChangePasswordForm(FlaskForm):
+    email = EmailField("Email", validators=[DataRequired(), Email("Introduce un email válido.")])
+    password = PasswordField("Contraseña", validators=[DataRequired()])
+    check_password = PasswordField("Repite la contraseña", validators=[DataRequired()])
+    submit = SubmitField("Cambiar contraseña")
