@@ -77,3 +77,14 @@ def edit_recipe(recipe_id):
         db.session.commit()
         return redirect(url_for("recipes.home"))
     return render_template("post_recipe.html", form=modify_recipe, edit=True, current_user=current_user)
+
+
+# Borrar una receta
+@recipes_blueprint.route("/delete-recipe/<int:recipe_id>")
+@user_logged
+def delete_recipe(recipe_id):
+    recipe_to_delete = db.get_or_404(Recipe, recipe_id)
+    db.session.delete(recipe_to_delete)
+    db.session.commit()
+    return redirect(url_for("recipes.home"))
+

@@ -19,6 +19,18 @@
 
 {% include "header.html" %}
 
+<script>
+  function deleteconfirm(){
+    var response = confirm("¿Quieres borrar la receta?");
+    if (response == true){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+</script>
+
 <main class="pb-4 pt-4" >
   <div class="container col-xxl-8 pt-5 pb-0" >
         <div class="row flex-lg-row g-5 pt-5 py-5 " >
@@ -39,8 +51,9 @@
                 <pre class="fs-6 ">{{ show_recipe.instructions }}</pre>
               </p>
 
-              {% if current_user.is_authenticated== show_recipe.user.id %}
+              {% if current_user.id == show_recipe.user.id %}
                 <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('recipes.edit_recipe', recipe_id=show_recipe.id) }}" role="button"> Modificar</a>
+                <a class="btn btn-sm btn-outline-secondary" onclick="return deleteconfirm()" href="{{ url_for('recipes.delete_recipe', recipe_id=show_recipe.id) }}" role="button"> Eliminar</a>
               {% endif %}
             </div>
             <p class="text-end text-body-secondary text-posted">Creado por {{ show_recipe.user.name }}</p>
