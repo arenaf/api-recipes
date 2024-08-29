@@ -28,6 +28,7 @@ def my_recipes():
     user_recipes_only = db.session.execute(db.select(Recipe).where(Recipe.user_id == current_user.id)).scalars().all()
     return render_template("index.html", all_recipes=user_recipes_only, current_user=current_user)
 
+
 # Mostrar recetas de una categoría
 @recipes_blueprint.route("/show-category/<category_name>")
 def show_category(category_name):
@@ -53,3 +54,26 @@ def add_new_recipe():
         db.session.commit()
         return redirect(url_for("recipes.home"))
     return render_template("post_recipe.html", form=form)
+
+
+# Modificar una receta
+@recipes_blueprint.route("/edit-recipe/<int:recipe_id>", methods=["GET", "POST"])
+@user_logged
+def edit_recipe(recipe_id):
+    recipe_to_edit = db.get_or_404(Recipe, recipe_id)
+    modify_recipe = RecipeForm(
+        title=recipe_to_edit.title,
+        img_url=recipe_to_edit.img_url,
+        ingredients=recipe_to_edit.ingredients,
+        instructions=recipe_to_edit.instructions,
+        category=recipe_to_edit.category,
+    )
+    if modify_recipe.validate_on_submit():
+        recipe_to_edit.title = modify_recipe.title.data
+        recipe_to_edit.img_url = modify_recipe.img_url.data
+        recipe_to_edit.ingredients = modify_recipe.ingredients.data
+        recipe_to_edit.instructions = modify_recipe.instructions.data
+        recipe_to_edit.category = modify_recipe.category.data
+        db.session.commit()
+        return redirect(url_for("recipes.home"))
+    return render_template("post_recipe.html", form=modify_recipe, edit=True, current_user=current_user)

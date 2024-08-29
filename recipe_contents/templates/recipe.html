@@ -39,6 +39,9 @@
                 <pre class="fs-6 ">{{ show_recipe.instructions }}</pre>
               </p>
 
+              {% if current_user.is_authenticated== show_recipe.user.id %}
+                <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('recipes.edit_recipe', recipe_id=show_recipe.id) }}" role="button"> Modificar</a>
+              {% endif %}
             </div>
             <p class="text-end text-body-secondary text-posted">Creado por {{ show_recipe.user.name }}</p>
           </div>
