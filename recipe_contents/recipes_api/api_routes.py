@@ -26,13 +26,16 @@ def convert_dict(response):
         )
     return recipe_list
 
-def check_user(email, password):
-    user = User.query.filter_by(email=email).first()
-    print(user)
-    if check_password_hash(user.password, password):
-        print(user.id)
-        return user
-    return False
+# Create token
+@api_blueprint.route("/token", methods=["GET"])
+def create_token():
+    if not current_user.is_authenticated:
+        return jsonify(response={"msg": "Bad username or password"}), 401
+    if current_user.is_authenticated:
+        user = User.query.filter_by(email=current_user.email).first()
+        access_token = create_access_token(identity=user.id)
+        return jsonify(response={"token": access_token, "user_id": user.id})
+    return jsonify(error={"Not found": "No existe email"})
 
 
 @api_blueprint.route("/api")
@@ -47,8 +50,32 @@ def api_get_all():
     recipe_list = convert_dict(recipes)
     return jsonify(all_recipes=recipe_list)
 
+
+@api_blueprint.route("/api-show-recipe", methods=["GET"])
+def api_show_recipe():
+    recipe_id = request.args.get("recipe_id")
+    requested_post = db.session.execute(db.select(Recipe).where(Recipe.id == recipe_id)).scalars()
+    recipe_list = convert_dict(requested_post)
+    if recipe_list == []:
+        return jsonify(error={"Not found": "Sorry, we don't have this recipe."})
+    return jsonify(all_recipes=recipe_list)
+
+
+# Mostrar mis recetas
+@api_blueprint.route("/api-my-recipes")
+@jwt_required()
+def api_my_recipes():
+    user_id = get_jwt_identity()
+    user_recipes_only = db.session.execute(db.select(Recipe).where(Recipe.user_id == user_id)).scalars().all()
+    recipe_list = convert_dict(user_recipes_only)
+    if recipe_list == []:
+        return jsonify(error={"Not found": "Sorry, we don't have this recipe."})
+    return jsonify(recipe=recipe_list)
+
+
 # Búsqueda por categoría
 @api_blueprint.route("/api-show-category")
+@jwt_required()
 def api_show_category():
     cat = request.args.get("cat")
     response = db.session.execute(db.select(Recipe).where(Recipe.category == cat)).scalars().all()
@@ -59,33 +86,20 @@ def api_show_category():
     # URL pruebas: http://127.0.0.1:5000/api-show-category?cat=Plato+principal
 
 
-# Create token
-@api_blueprint.route("/token", methods=["GET"])
-def create_token():
-    if not current_user.is_authenticated:
-        return jsonify(response={"msg": "Bad username or password"}), 401
-    if current_user.is_authenticated:
-        user = User.query.filter_by(email=current_user.email).first()
-        access_token = create_access_token(identity=user.id)
-        return jsonify(response={"token": access_token, "user_id": user.id})
-    return jsonify(error={"Not found": "No existe email"})
-
-
 # HTTP POST - Create Record
 # Se añade a través de postman, rellenar los datos y send.
 @api_blueprint.route("/api-new-recipe", methods=["POST"])
 @jwt_required()
 def api_add_new_recipe():
     user_id = get_jwt_identity()
-    user = User.query.filter_by(id=user_id).first()
-    if user:
+    if user_id:
         new_recipe = Recipe(
             title=request.args.get("title"),
             img_url=request.args.get("img_url"),
             ingredients=request.args.get("ingredients"),
             instructions=request.args.get("instructions"),
             category=request.args.get("category"),
-            user_id=user.id,
+            user_id=user_id,
         )
         db.session.add(new_recipe)
         db.session.commit()
@@ -110,4 +124,22 @@ def api_delete_recipe(recipe_id):
 
 
 
+
+# HTTP PUT/PATCH - Update Record
+@api_blueprint.route("/api-edit-recipe/<int:recipe_id>", methods=["PUT"])
+@jwt_required()
+def api_edit_recipe(recipe_id):
+    user_id = get_jwt_identity()
+    recipe_to_edit = db.get_or_404(Recipe, recipe_id)
+    print(recipe_to_edit.id, recipe_id, user_id)
+    if user_id == recipe_to_edit.user_id:
+        recipe_to_edit.title = request.args.get("title")
+        recipe_to_edit.img_url = request.args.get("img_url")
+        recipe_to_edit.ingredients = request.args.get("ingredients")
+        recipe_to_edit.instructions = request.args.get("instructions")
+        recipe_to_edit.category = request.args.get("category")
+        db.session.commit()
+        return jsonify(response={"Success": "Successfully modified the recipe."})
+    else:
+        return jsonify(error={"Not found": "You can't modify the recipe, you are not the author."})
 
