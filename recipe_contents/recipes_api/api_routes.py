@@ -1,11 +1,16 @@
 from flask import jsonify, request, Blueprint, render_template
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_login import current_user
 from werkzeug.security import check_password_hash
-
+# from flask_jwt_extended import create_access_token
 from recipe_contents import db
 from recipe_contents.models import Recipe, User
+import jwt
+
 
 api_blueprint = Blueprint("api", __name__, template_folder="../templates")
 
+secret_jwt = "1234"
 def convert_dict(response):
     recipe_list = []
     for recipe_data in response:
@@ -52,6 +57,57 @@ def api_show_category():
         return jsonify(error={"Not found": "Sorry, we don't have this recipe."})
     return jsonify(recipe=recipe_list)
     # URL pruebas: http://127.0.0.1:5000/api-show-category?cat=Plato+principal
+
+
+# Create token
+@api_blueprint.route("/token", methods=["GET"])
+def create_token():
+    if not current_user.is_authenticated:
+        return jsonify(response={"msg": "Bad username or password"}), 401
+    if current_user.is_authenticated:
+        user = User.query.filter_by(email=current_user.email).first()
+        access_token = create_access_token(identity=user.id)
+        return jsonify(response={"token": access_token, "user_id": user.id})
+    return jsonify(error={"Not found": "No existe email"})
+
+
+# HTTP POST - Create Record
+# Se añade a través de postman, rellenar los datos y send.
+@api_blueprint.route("/api-new-recipe", methods=["POST"])
+@jwt_required()
+def api_add_new_recipe():
+    user_id = get_jwt_identity()
+    user = User.query.filter_by(id=user_id).first()
+    if user:
+        new_recipe = Recipe(
+            title=request.args.get("title"),
+            img_url=request.args.get("img_url"),
+            ingredients=request.args.get("ingredients"),
+            instructions=request.args.get("instructions"),
+            category=request.args.get("category"),
+            user_id=user.id,
+        )
+        db.session.add(new_recipe)
+        db.session.commit()
+        return jsonify(response={"Success": "Successfully added the new recipe."})
+    else:
+        return jsonify(response={"Forbidden": "Make sure you have the correct api_key."})
+
+
+@api_blueprint.route("/api-delete-recipe/<int:recipe_id>", methods=["DELETE"])
+@jwt_required()
+def api_delete_recipe(recipe_id):
+    user_id = get_jwt_identity()
+    recipe_to_delete = db.get_or_404(Recipe, recipe_id)
+    if user_id == recipe_to_delete.user_id:
+        db.session.delete(recipe_to_delete)
+        db.session.commit()
+        return jsonify(response={"Success": "Successfully deleted the recipe."})
+    if user_id != recipe_to_delete.user_id:
+        return jsonify(response={"Forbidden": "You can't delete the recipe, you are not the author."})
+    else:
+        return jsonify(response={"Forbidden": "Make sure you have the correct api_key."})
+
 
 
 
