@@ -4,35 +4,42 @@ from flask_login import current_user
 from recipe_contents import db
 from recipe_contents.forms import RecipeForm
 from recipe_contents.models import Recipe
+from recipe_contents.recipes_routes.db_queries import get_all_recipes, get_recipe_by_id, get_my_recipes, \
+    get_recipes_by_category
 from recipe_contents.user_routes.user_routes import user_logged
+
 
 recipes_blueprint = Blueprint("recipes", __name__, template_folder="../templates")
 
 
 @recipes_blueprint.route("/")
 def home():
-    recipes = db.session.execute(db.select(Recipe)).scalars().all()
+    # recipes = db.session.execute(db.select(Recipe)).scalars().all()
+    recipes = get_all_recipes()
     return render_template("index.html", all_recipes=recipes, current_user=current_user)
 
 
 # Ir una receta
 @recipes_blueprint.route("/show-recipe/<int:recipe_id>")
 def show_recipe(recipe_id):
-    requested_post = db.session.execute(db.select(Recipe).where(Recipe.id == recipe_id)).scalar()
+    # requested_post = db.session.execute(db.select(Recipe).where(Recipe.id == recipe_id)).scalar()
+    requested_post = get_recipe_by_id(recipe_id)
     return render_template("recipe.html", show_recipe=requested_post)
 
 
 # Mostrar mis recetas
 @recipes_blueprint.route("/my-recipes")
 def my_recipes():
-    user_recipes_only = db.session.execute(db.select(Recipe).where(Recipe.user_id == current_user.id)).scalars().all()
+    # user_recipes_only = db.session.execute(db.select(Recipe).where(Recipe.user_id == current_user.id)).scalars().all()
+    user_recipes_only = get_my_recipes(current_user.id)
     return render_template("index.html", all_recipes=user_recipes_only, current_user=current_user)
 
 
 # Mostrar recetas de una categoría
 @recipes_blueprint.route("/show-category/<category_name>")
 def show_category(category_name):
-    requested_category = db.session.execute(db.select(Recipe).where(Recipe.category == category_name)).scalars().all()
+    # requested_category = db.session.execute(db.select(Recipe).where(Recipe.category == category_name)).scalars().all()
+    requested_category = get_recipes_by_category(category_name)
     return render_template("index.html", all_recipes=requested_category)
 
 
@@ -60,7 +67,8 @@ def add_new_recipe():
 @recipes_blueprint.route("/edit-recipe/<int:recipe_id>", methods=["GET", "POST"])
 @user_logged
 def edit_recipe(recipe_id):
-    recipe_to_edit = db.get_or_404(Recipe, recipe_id)
+    # recipe_to_edit = db.get_or_404(Recipe, recipe_id)
+    recipe_to_edit = get_recipe_by_id(recipe_id)
     modify_recipe = RecipeForm(
         title=recipe_to_edit.title,
         img_url=recipe_to_edit.img_url,
@@ -83,7 +91,8 @@ def edit_recipe(recipe_id):
 @recipes_blueprint.route("/delete-recipe/<int:recipe_id>")
 @user_logged
 def delete_recipe(recipe_id):
-    recipe_to_delete = db.get_or_404(Recipe, recipe_id)
+    # recipe_to_delete = db.get_or_404(Recipe, recipe_id)
+    recipe_to_delete = get_recipe_by_id(recipe_id)
     db.session.delete(recipe_to_delete)
     db.session.commit()
     return redirect(url_for("recipes.home"))
