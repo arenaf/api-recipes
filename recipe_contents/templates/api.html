@@ -16,9 +16,60 @@
   </div>
 </header>
 
-{% include "header.html" %}>
+{% include "header.html" %}
 
 
+<script>
+
+function copyToken( id_element ) {
+    var text = document.getElementById(id_element).innerHTML;
+    navigator.clipboard.writeText(text);
+  }
+
+</script>
+
+<main class="mb-4">
+  <div class="container g-4 py-5">
+    <h2 class="pb-2 border-bottom">API</h2>
+
+
+
+      <div class="container my-5 ">
+  <div class="position-relative p-5 text-center border border-dashed rounded-4 card-token">
+
+    {% if current_user.is_authenticated %}
+
+      {% if access_token %}
+        <h1 class="text-body-emphasis mx-auto">Token generado</h1>
+        <div class="position-relative text-start border border-dashed rounded-1 form-control box-adjustment mt-3" id="myToken"> {{ access_token }} </div>
+
+        <button class="btn btn-sm btn-outline-secondary mt-3" type="button" onclick="copyToken('myToken')">
+          Copiar
+        </button>
+
+      {% endif %}
+      {% if not access_token %}
+      <h1 class="text-body-emphasis mx-auto">Generar token</h1>
+      <p class="col-lg-8 mx-auto mb-4">
+          Obtén tu token para poder añadir, modificar y borrar desde la API.
+      </p>
+        <a class="btn btn-secondary mb-4" href="{{ url_for('api.create_token') }}" role="button"> Obtener Token</a>
+      {% endif %}
+    {% endif %}
+    {% if not current_user.is_authenticated %}
+    <h1 class="text-body-emphasis mx-auto">Generar token</h1>
+      <p class="col-lg-8 mx-auto mb-4">
+          Regístrate o loguéate y obtén tu token para poder añadir, modificar y borrar desde la API.
+      </p>
+    {% endif %}
+
+
+  </div>
+</div>
+
+  </div>
+
+</main>
 
 
 {% include "footer.html" %}

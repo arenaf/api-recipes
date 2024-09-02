@@ -1,5 +1,5 @@
 from flask import jsonify, request, Blueprint, render_template
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, create_refresh_token
 from flask_login import current_user
 
 from recipe_contents import db
@@ -34,13 +34,14 @@ def create_token():
     if current_user.is_authenticated:
         user = User.query.filter_by(email=current_user.email).first()
         access_token = create_access_token(identity=user.id)
-        return jsonify(response={"token": access_token, "user_id": user.id})
+        # return jsonify(response={"token": access_token, "user_id": user.id})
+        return render_template("api.html", access_token=access_token)
     return jsonify(error={"Not found": "No existe email"})
 
 
 @api_blueprint.route("/api")
 def api():
-    return render_template("api.html")
+    return render_template("api.html", current_user=current_user)
 
 
 # Todas la recetas

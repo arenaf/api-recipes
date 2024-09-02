@@ -46,6 +46,16 @@ pre{
     background-color: #fffbf8;
 }
 
+.card-token{
+    background-color: #fffbf8;
+}
+
+.box-adjustment{
+    height:auto;
+    word-wrap: break-word;
+}
+}
+
 pre{
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     width: 50em;
@@ -66,7 +76,7 @@ body{
     flex-direction: column;
     min-height: 100vh;
     background-image: url("../assets/img/fondo1.png");
-    background-size:contain;
+    background-size:cover;
 }
 
 .img-highlight {
