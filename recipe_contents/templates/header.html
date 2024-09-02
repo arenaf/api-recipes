@@ -1,80 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <meta charset="utf-8" />
+<head>
+    <meta charset="utf-8"/>
     <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
     <title>My Recipes</title>
     {% block styles %}
-    <!-- Load Bootstrap-Flask CSS here -->
-    {{ bootstrap.load_css() }}
-    <link rel="stylesheet" href="../static/css/style.css">
+        {{ bootstrap.load_css() }}
+        <link rel="stylesheet" href="../static/css/style.css">
     {% endblock %}
-  </head>
-
-
+</head>
 
 
 <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
-      <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="{{ url_for('recipes.home') }}">INICIO</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="{{ url_for('recipes.home') }}">HOME</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('recipes.add_new_recipe') }}">Nueva receta</a>
-        </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('recipes.add_new_recipe') }}">New Recipe</a>
+                </li>
 
-        <ul class="navbar-nav">
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Filtrar recetas
-              </a>
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            Filter recipes
+                        </a>
+                        <ul class="dropdown-menu bg-my-navbar">
+                            <li><a class="dropdown-item bg-my-navbar"
+                                   href="{{ url_for('recipes.show_category', category_name='Breakfast') }}">Breakfast</a>
+                            </li>
+                            <li><a class="dropdown-item bg-my-navbar"
+                                   href="{{ url_for('recipes.show_category', category_name='Dinner') }}">Dinner</a></li>
+                            <li><a class="dropdown-item bg-my-navbar"
+                                   href="{{ url_for('recipes.show_category', category_name='Lunch') }}">Lunch</a></li>
+                            <li><a class="dropdown-item bg-my-navbar"
+                                   href="{{ url_for('recipes.show_category', category_name='Snack') }}">Snack</a>
+                            </li>
+                            <li><a class="dropdown-item bg-my-navbar"
+                                   href="{{ url_for('recipes.show_category', category_name='Starter') }}">Starter</a>
+                            </li>
+                            <li><a class="dropdown-item bg-my-navbar" href="{{ url_for('recipes.home') }}">All Recipes</a></li>
+                            {% if current_user.is_authenticated %}
+                                <li><a class="dropdown-item bg-my-navbar" href="{{ url_for('recipes.my_recipes') }}">Mis
+                                    Recetas</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                </ul>
+            </ul>
 
-              <ul class="dropdown-menu bg-my-navbar">
-                <li><a class="dropdown-item bg-my-navbar" href="{{ url_for('recipes.show_category', category_name='Desayuno') }}">Desayuno</a></li>
-                <li><a class="dropdown-item bg-my-navbar" href="{{ url_for('recipes.show_category', category_name='Entrante') }}">Entrante</a></li>
-                <li><a class="dropdown-item bg-my-navbar" href="{{ url_for('recipes.show_category', category_name='Plato principal') }}">Plato Principal</a></li>
-                <li><a class="dropdown-item bg-my-navbar" href="{{ url_for('recipes.show_category', category_name='Merienda') }}">Merienda</a></li>
-                <li><a class="dropdown-item bg-my-navbar" href="{{ url_for('recipes.show_category', category_name='Cena') }}">Cena</a></li>
-                <li><a class="dropdown-item bg-my-navbar" href="{{ url_for('recipes.home') }}">Todas las Recetas</a></li>
-              {% if current_user.is_authenticated %}
-                <li><a class="dropdown-item bg-my-navbar" href="{{ url_for('recipes.my_recipes') }}">Mis Recetas</a></li>
-              {% endif %}
-              </ul>
-
-            </li>
-        </ul>
-
-        </ul>
-
-      <ul class="navbar-nav">
-        {% if not current_user.is_authenticated %}
-            <li class="nav-item ">
-              <a class="nav-link" href="{{ url_for('user.login') }}">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('user.register_new_user') }}">Registro</a>
-            </li>
-        {% endif %}
-        {% if current_user.is_authenticated %}
-          <li class="nav-item text-logged-in"> Hola {{ current_user.name }} </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('user.logout') }}">Logout</a>
-            </li>
-        {% endif %}
-      </ul>
+            <ul class="navbar-nav">
+                {% if not current_user.is_authenticated %}
+                <li class="nav-item ">
+                    <a class="nav-link" href="{{ url_for('user.login') }}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('user.register_new_user') }}">Register</a>
+                </li>
+                {% endif %}
+                {% if current_user.is_authenticated %}
+                <li class="nav-item text-logged-in"> Hello {{ current_user.name }}</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('user.logout') }}">Logout</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('api.api') }}">API</a>
+                </li>
+            </ul>
         </div>
-      </div>
-    </nav>
+    </div>
+</nav>
 
 
 </html>

@@ -21,26 +21,23 @@
 
 {% include "header.html" %}
 
-
 <main class="mb-4">
   <div class="container g-4 py-5">
     <h2 class="pb-2 border-bottom">Login</h2>
     <div class="row">
-      <!-- mensaje flash-->
       {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      {% for message in messages %}
-      <p class="flash">{{ message }}</p>
-      {% endfor %}
-      {% endif %}
+        {% if messages %}
+          {% for message in messages %}
+            <p class="flash">{{ message }}</p>
+          {% endfor %}
+        {% endif %}
       {% endwith %}
       <div class="col-lg-8 col-md-10 mx-auto g-2 py-2">
-
-        <!--formulario login-->
         {{ render_form(form, novalidate=true, button_map={"submit": "secondary"}) }}
         <div class="text-end text-body-secondary">
-          I forgor my password
-          <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('user.change_password') }}" role="button"> Change</a>
+          I forgot my password
+          <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('user.change_password') }}" role="button">
+            Change</a>
         </div>
       </div>
     </div>

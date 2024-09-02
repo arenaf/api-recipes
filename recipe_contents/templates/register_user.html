@@ -14,29 +14,25 @@
   <div class="p-3 text-center jumbotron img-cabecera">
 
     <div class="container py-5">
-      <p class="text-title">REGISTRO</p>
+      <p class="text-title">REGISTER</p>
     </div>
   </div>
 </header>
 
 {% include "header.html" %}
 
-
-
 <main class="mb-4">
   <div class="container g-4 py-5">
-    <h2 class="pb-2 border-bottom">Regístrate</h2>
+    <h2 class="pb-2 border-bottom">Sign up</h2>
     <div class="row">
-      <!-- mensaje flash-->
       {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      {% for message in messages %}
-      <p class="flash error">{{ message }}</p>
-      {% endfor %}
-      {% endif %}
+        {% if messages %}
+          {% for message in messages %}
+            <p class="flash error">{{ message }}</p>
+          {% endfor %}
+        {% endif %}
       {% endwith %}
       <div class="col-lg-8 col-md-10 mx-auto g-2 py-2">
-        <!-- formulario de registro -->
         {{ render_form(form, button_map={"submit": "secondary"}) }}
       </div>
     </div>

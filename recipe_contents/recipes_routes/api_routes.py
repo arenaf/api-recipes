@@ -26,7 +26,7 @@ def convert_dict(response):
     return recipe_list
 
 
-# Create token
+# -------- Create token --------
 @api_blueprint.route("/token", methods=["GET"])
 def create_token():
     if not current_user.is_authenticated:
@@ -34,9 +34,8 @@ def create_token():
     if current_user.is_authenticated:
         user = User.query.filter_by(email=current_user.email).first()
         access_token = create_access_token(identity=user.id)
-        # return jsonify(response={"token": access_token, "user_id": user.id})
         return render_template("api.html", access_token=access_token)
-    return jsonify(error={"Not found": "No existe email"})
+    return jsonify(error={"Not found": "The email does not exist"})
 
 
 @api_blueprint.route("/api")
@@ -44,7 +43,7 @@ def api():
     return render_template("api.html", current_user=current_user)
 
 
-# Todas la recetas
+# -------- All recipes ---------
 @api_blueprint.route("/api-get-all")
 def api_get_all():
     # recipes = db.session.execute(db.select(Recipe)).scalars().all()
@@ -53,6 +52,7 @@ def api_get_all():
     return jsonify(all_recipes=recipe_list)
 
 
+# -------- Show a recipe --------
 @api_blueprint.route("/api-show-recipe", methods=["GET"])
 def api_show_recipe():
     recipe_id = request.args.get("recipe_id")
@@ -64,7 +64,7 @@ def api_show_recipe():
     return jsonify(all_recipes=recipe_list)
 
 
-# Mostrar mis recetas
+# -------- Show my recipes --------
 @api_blueprint.route("/api-my-recipes")
 @jwt_required()
 def api_my_recipes():
@@ -77,7 +77,7 @@ def api_my_recipes():
     return jsonify(recipe=recipe_list)
 
 
-# Búsqueda por categoría
+# -------- Search by category --------
 @api_blueprint.route("/api-show-category")
 def api_show_category():
     category_name = request.args.get("cat")
@@ -87,11 +87,9 @@ def api_show_category():
     if recipe_list == []:
         return jsonify(error={"Not found": "Sorry, we don't have this recipe."})
     return jsonify(recipe=recipe_list)
-    # URL pruebas: http://127.0.0.1:5000/api-show-category?cat=Plato+principal
 
 
-# HTTP POST - Create Record
-# Se añade a través de postman, rellenar los datos y send.
+# -------- Add new recipe --------
 @api_blueprint.route("/api-new-recipe", methods=["POST"])
 @jwt_required()
 def api_add_new_recipe():
@@ -112,7 +110,7 @@ def api_add_new_recipe():
         return jsonify(response={"Forbidden": "Make sure you have the correct api_key."})
 
 
-# HTTP PUT/PATCH - Update Record
+# -------- Modify recipe --------
 @api_blueprint.route("/api-edit-recipe/<int:recipe_id>", methods=["PUT"])
 @jwt_required()
 def api_edit_recipe(recipe_id):
@@ -132,6 +130,7 @@ def api_edit_recipe(recipe_id):
         return jsonify(error={"Not found": "You can't modify the recipe, you are not the author."})
 
 
+# -------- Delete recipe --------
 @api_blueprint.route("/api-delete-recipe/<int:recipe_id>", methods=["DELETE"])
 @jwt_required()
 def api_delete_recipe(recipe_id):

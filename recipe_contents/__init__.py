@@ -1,30 +1,32 @@
 from flask import Flask
 from flask_bootstrap import Bootstrap5
+from flask_jwt_extended import JWTManager
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
-
+import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "ui8402Lou802lkKowkS_y720floR97"
+app.config['JWT_SECRET_KEY'] = "k39fkeIU_ll23_llei3nKK3L"
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(hours=1)
+
 Bootstrap5(app)
 
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+
 class Base(DeclarativeBase):
     pass
 
-
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///recipes.db'
 db = SQLAlchemy(model_class=Base)
-
-# Connect to Database
 db.init_app(app)
+jwt = JWTManager(app)
 
-
-with app.app_context():
-    db.create_all()
+# with app.app_context():
+#     db.create_all()
 
 from recipe_contents import blueprint_routes

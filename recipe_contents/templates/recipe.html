@@ -21,7 +21,7 @@
 
 <script>
   function deleteconfirm(){
-    var response = confirm("¿Quieres borrar la receta?");
+    var response = confirm("Do you want to delete the recipe?");
     if (response == true){
       return true;
     }
@@ -31,36 +31,38 @@
   }
 </script>
 
-<main class="pb-4 pt-4" >
-  <div class="container col-xxl-8 pt-5 pb-0" >
-        <div class="row flex-lg-row g-5 pt-5 py-5 " >
+<main class="pb-4 pt-4">
+  <div class="container col-xxl-8 pt-5 pb-0">
+    <div class="row flex-lg-row g-5 pt-5 py-5 ">
 
-          <div class="col-10 col-sm-8 col-lg-6">
-            <img src="{{ show_recipe.img_url }}" alt="img-recipe" border="0" class="d-block mx-lg-auto img-fluid" width="600em" loading="lazy"/>
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">
-              {{ show_recipe.title }}
-            </h1>
-              <h6 class="card-subtitle mb-2 text-body-secondary">{{ show_recipe.category }}</h6>
-            <div>
-              <p class="lead mb-4">
-              <h3 class="fw-semibold text-body-emphasis lh-1 mb-3">Ingredientes </h3>
-                <pre class="fs-6">{{ show_recipe.ingredients }}</pre>
-              <h3 class="fw-semibold text-body-emphasis lh-1 mb-3">Instrucciones </h3>
-                <pre class="fs-6 ">{{ show_recipe.instructions }}</pre>
-              </p>
-
-              {% if current_user.id == show_recipe.user.id %}
-                <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('recipes.edit_recipe', recipe_id=show_recipe.id) }}" role="button"> Modificar</a>
-                <a class="btn btn-sm btn-outline-secondary" onclick="return deleteconfirm()" href="{{ url_for('recipes.delete_recipe', recipe_id=show_recipe.id) }}" role="button"> Eliminar</a>
-              {% endif %}
-            </div>
-            <p class="text-end text-body-secondary text-posted">Creado por {{ show_recipe.user.name }}</p>
-          </div>
-        </div>
+      <div class="col-10 col-sm-8 col-lg-6">
+        <img src="{{ show_recipe.img_url }}" alt="img-recipe" border="0" class="d-block mx-lg-auto img-fluid"
+             width="600em" loading="lazy"/>
       </div>
-</main>
+      <div class="col-lg-6">
+        <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">
+          {{ show_recipe.title }}
+        </h1>
+        <h6 class="card-subtitle mb-2 text-body-secondary">{{ show_recipe.category }}</h6>
+        <div>
+          <p class="lead mb-4">
+          <h3 class="fw-semibold text-body-emphasis lh-1 mb-3">Ingredients </h3>
+          <pre class="fs-6">{{ show_recipe.ingredients }}</pre>
+          <h3 class="fw-semibold text-body-emphasis lh-1 mb-3">Instructions </h3>
+          <pre class="fs-6 ">{{ show_recipe.instructions }}</pre>
+          </p>
 
+          {% if current_user.id == show_recipe.user.id %}
+          <a class="btn btn-sm btn-outline-secondary"
+             href="{{ url_for('recipes.edit_recipe', recipe_id=show_recipe.id) }}" role="button"> Modify</a>
+          <a class="btn btn-sm btn-outline-secondary" onclick="return deleteconfirm()"
+             href="{{ url_for('recipes.delete_recipe', recipe_id=show_recipe.id) }}" role="button"> Delete</a>
+          {% endif %}
+        </div>
+        <p class="text-end text-body-secondary text-posted">Posted by {{ show_recipe.user.name }}</p>
+      </div>
+    </div>
+  </div>
+</main>
 
 {% include "footer.html" %}

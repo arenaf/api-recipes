@@ -14,12 +14,12 @@ recipes_blueprint = Blueprint("recipes", __name__, template_folder="../templates
 
 @recipes_blueprint.route("/")
 def home():
-    # recipes = db.session.execute(db.select(Recipe)).scalars().all()
-    recipes = get_all_recipes()
+    recipes = db.session.execute(db.select(Recipe)).scalars().all()
+    # recipes = get_all_recipes()
     return render_template("index.html", all_recipes=recipes, current_user=current_user)
 
 
-# Ir una receta
+# -------- Show a recipe --------
 @recipes_blueprint.route("/show-recipe/<int:recipe_id>")
 def show_recipe(recipe_id):
     # requested_post = db.session.execute(db.select(Recipe).where(Recipe.id == recipe_id)).scalar()
@@ -27,15 +27,16 @@ def show_recipe(recipe_id):
     return render_template("recipe.html", show_recipe=requested_post)
 
 
-# Mostrar mis recetas
+# -------- Show my recipes --------
 @recipes_blueprint.route("/my-recipes")
+@user_logged
 def my_recipes():
     # user_recipes_only = db.session.execute(db.select(Recipe).where(Recipe.user_id == current_user.id)).scalars().all()
     user_recipes_only = get_my_recipes(current_user.id)
     return render_template("index.html", all_recipes=user_recipes_only, current_user=current_user)
 
 
-# Mostrar recetas de una categoría
+# -------- Search by category --------
 @recipes_blueprint.route("/show-category/<category_name>")
 def show_category(category_name):
     # requested_category = db.session.execute(db.select(Recipe).where(Recipe.category == category_name)).scalars().all()
@@ -43,7 +44,7 @@ def show_category(category_name):
     return render_template("index.html", all_recipes=requested_category)
 
 
-# Añadir una receta
+# -------- Add new recipe --------
 @recipes_blueprint.route("/new-recipe", methods=["GET", "POST"])
 @user_logged
 def add_new_recipe():
@@ -63,7 +64,7 @@ def add_new_recipe():
     return render_template("post_recipe.html", form=form)
 
 
-# Modificar una receta
+# -------- Modify recipe --------
 @recipes_blueprint.route("/edit-recipe/<int:recipe_id>", methods=["GET", "POST"])
 @user_logged
 def edit_recipe(recipe_id):
@@ -87,7 +88,7 @@ def edit_recipe(recipe_id):
     return render_template("post_recipe.html", form=modify_recipe, edit=True, current_user=current_user)
 
 
-# Borrar una receta
+# -------- Delete recipe --------
 @recipes_blueprint.route("/delete-recipe/<int:recipe_id>")
 @user_logged
 def delete_recipe(recipe_id):
@@ -96,4 +97,3 @@ def delete_recipe(recipe_id):
     db.session.delete(recipe_to_delete)
     db.session.commit()
     return redirect(url_for("recipes.home"))
-
