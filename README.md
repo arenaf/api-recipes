@@ -6,6 +6,8 @@
 This project has been developed with ***Python*** and the following libraries and tools: ***Flask***, ***SQLAlchemy***, ***WTForm***, ***JWT-extended***, ***Postman***, ***Bootstrap*** and ***HTML***.
 
 This is a website that allows uploading, modifying and deleting recipes (**CRUD**). Only logged-in users can make changes to the recipe, if the user is not logged in, they will only be able to view it.
+These actions can be performed via the web or the API.
+
 
 ![init](https://github.com/user-attachments/assets/a22d68d2-3cf1-46ed-874a-551da12f1517)
 
