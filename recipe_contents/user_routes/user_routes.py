@@ -3,12 +3,16 @@ from flask import render_template, request, redirect, url_for, Blueprint, flash
 from flask_login import login_user, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from recipe_contents import db
+from recipe_contents import db, login_manager
 from recipe_contents.forms import RegisterUserForm, LoginForm, ChangePasswordForm
 from recipe_contents.models import User
 
 user_blueprint = Blueprint("user", __name__, template_folder="../templates")
 
+
+@login_manager.user_loader
+def load_user(user_id):
+    return db.session.execute(db.select(User).where(User.id == user_id)).scalar()
 
 
 # -------- New user registration --------
@@ -76,8 +80,10 @@ def change_password():
     if request.method == "POST":
         user = User.query.filter_by(email=request.form["email"]).first()
         if not form.validate():
-            flash("Email no válido.")
+            flash("Invalid email.")
             return redirect(url_for("user.change_password"))
+        if user == None:
+            flash("There is no user registered with that email!")
         if user != None:
             if request.form["password"] == request.form["check_password"]:
                 final_pass = generate_password_hash(password=request.form["password"], method="pbkdf2:sha256",

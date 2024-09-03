@@ -5,10 +5,11 @@ from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 import datetime
+import os
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = "ui8402Lou802lkKowkS_y720floR97"
-app.config['JWT_SECRET_KEY'] = "k39fkeIU_ll23_llei3nKK3L"
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
+app.config['JWT_SECRET_KEY'] = os.environ.get("JWT_SECRET_KEY")
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(hours=1)
 
 Bootstrap5(app)

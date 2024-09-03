@@ -2,12 +2,7 @@ from flask_login import UserMixin
 from sqlalchemy import Integer, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from recipe_contents import db, login_manager, app
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return db.session.execute(db.select(User).where(User.id == user_id)).scalar()
+from recipe_contents import db, app
 
 
 class Recipe(db.Model):
@@ -31,6 +26,7 @@ class User(db.Model, UserMixin):
     password: Mapped[str] = mapped_column(String(100), nullable=False)
     # Relationship with the recipe table
     user_recipe = relationship("Recipe", back_populates="user")
+
 
 with app.app_context():
     db.create_all()
