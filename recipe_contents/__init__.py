@@ -22,12 +22,11 @@ login_manager.init_app(app)
 class Base(DeclarativeBase):
     pass
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///recipes.db'
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URI", 'sqlite:///recipes.db')
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 jwt = JWTManager(app)
 
-# with app.app_context():
-#     db.create_all()
 
 from recipe_contents import blueprint_routes

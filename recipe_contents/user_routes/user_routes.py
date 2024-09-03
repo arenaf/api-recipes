@@ -1,3 +1,8 @@
+"""
+File responsible for performing different operations with the user: creation, change of password,
+login and logout, as well as verifying whether the user is currently logged in.
+"""
+
 from functools import wraps
 from flask import render_template, request, redirect, url_for, Blueprint, flash
 from flask_login import login_user, logout_user, current_user
@@ -88,7 +93,7 @@ def change_password():
             if request.form["password"] == request.form["check_password"]:
                 final_pass = generate_password_hash(password=request.form["password"], method="pbkdf2:sha256",
                                                     salt_length=8)
-                user.password=final_pass
+                user.password = final_pass
                 db.session.add(user)
                 db.session.commit()
                 login_user(user)
@@ -107,4 +112,5 @@ def user_logged(function):
             flash("Only logged in users have access to the site.")
             return redirect(url_for("user.login"))
         return function(*args, **kwargs)
+
     return decorated_function

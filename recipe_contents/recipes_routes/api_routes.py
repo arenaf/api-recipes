@@ -1,5 +1,10 @@
+"""
+Document with the routes that are used in the API.
+Includes the creation of the token.
+"""
+
 from flask import jsonify, request, Blueprint, render_template
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, create_refresh_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask_login import current_user
 
 from recipe_contents import db
@@ -46,7 +51,6 @@ def api():
 # -------- All recipes ---------
 @api_blueprint.route("/api-get-all")
 def api_get_all():
-    # recipes = db.session.execute(db.select(Recipe)).scalars().all()
     recipes = get_all_recipes()
     recipe_list = convert_dict(recipes)
     return jsonify(all_recipes=recipe_list)
@@ -56,7 +60,6 @@ def api_get_all():
 @api_blueprint.route("/api-show-recipe", methods=["GET"])
 def api_show_recipe():
     recipe_id = request.args.get("recipe_id")
-    # requested_post = db.session.execute(db.select(Recipe).where(Recipe.id == recipe_id)).scalars()
     requested_post = api_get_recipe_by_id(recipe_id)
     recipe_list = convert_dict(requested_post)
     if recipe_list == []:
@@ -69,7 +72,6 @@ def api_show_recipe():
 @jwt_required()
 def api_my_recipes():
     user_id = get_jwt_identity()
-    # user_recipes_only = db.session.execute(db.select(Recipe).where(Recipe.user_id == user_id)).scalars().all()
     user_recipes_only = get_my_recipes(user_id)
     recipe_list = convert_dict(user_recipes_only)
     if recipe_list == []:
@@ -81,7 +83,6 @@ def api_my_recipes():
 @api_blueprint.route("/api-show-category")
 def api_show_category():
     category_name = request.args.get("cat")
-    # response = db.session.execute(db.select(Recipe).where(Recipe.category == cat)).scalars().all()
     requested_category = get_recipes_by_category(category_name)
     recipe_list = convert_dict(requested_category)
     if recipe_list == []:
@@ -115,7 +116,6 @@ def api_add_new_recipe():
 @jwt_required()
 def api_edit_recipe(recipe_id):
     user_id = get_jwt_identity()
-    # recipe_to_edit = db.get_or_404(Recipe, recipe_id)
     recipe_to_edit = get_recipe_by_id(recipe_id)
     print(recipe_to_edit.id, recipe_id, user_id)
     if user_id == recipe_to_edit.user_id:
@@ -135,7 +135,6 @@ def api_edit_recipe(recipe_id):
 @jwt_required()
 def api_delete_recipe(recipe_id):
     user_id = get_jwt_identity()
-    # recipe_to_delete = db.get_or_404(Recipe, recipe_id)
     recipe_to_delete = get_recipe_by_id(recipe_id)
     if user_id == recipe_to_delete.user_id:
         db.session.delete(recipe_to_delete)

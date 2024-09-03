@@ -1,3 +1,7 @@
+"""
+This file contains the logical structure of the database and its relationships.
+"""
+
 from flask_login import UserMixin
 from sqlalchemy import Integer, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship

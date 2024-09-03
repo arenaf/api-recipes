@@ -18,7 +18,7 @@
 
 pre{
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    width: 50em;
+    width: 40em;
     white-space: pre-wrap;
 }
 
@@ -56,11 +56,7 @@ pre{
 }
 }
 
-pre{
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    width: 50em;
-    white-space: pre-wrap;
-}
+
 
 h1{
     width: 15em;
@@ -74,7 +70,7 @@ h1{
 body{
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    height: 100vh;
     background-image: url("../assets/img/fondo1.png");
     background-size:cover;
 }

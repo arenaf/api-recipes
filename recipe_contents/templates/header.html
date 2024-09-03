@@ -49,12 +49,11 @@
                                    href="{{ url_for('recipes.show_category', category_name='Snack') }}">Snack</a>
                             </li>
                             <li><a class="dropdown-item bg-my-navbar"
-                                   href="{{ url_for('recipes.show_category', category_name='Starter') }}">Starter</a>
+                                   href="{{ url_for('recipes.show_category', category_name='Starters') }}">Starters</a>
                             </li>
                             <li><a class="dropdown-item bg-my-navbar" href="{{ url_for('recipes.home') }}">All Recipes</a></li>
                             {% if current_user.is_authenticated %}
-                                <li><a class="dropdown-item bg-my-navbar" href="{{ url_for('recipes.my_recipes') }}">Mis
-                                    Recetas</a></li>
+                                <li><a class="dropdown-item bg-my-navbar" href="{{ url_for('recipes.my_recipes') }}">My Recipes</a></li>
                             {% endif %}
                         </ul>
                     </li>
